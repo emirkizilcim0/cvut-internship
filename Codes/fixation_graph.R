@@ -2,14 +2,59 @@ library(ggplot2)
 library(png)
 library(grid)
 library(dplyr)
+#######################
+#######################
+#######################
+
+
+
+library(ggplot2)
+library(png)
+library(grid)
+library(readxl)
+library(dplyr)
+
+# Load AOIs and filter for Screen 1
+aois <- read_excel("C:/Users/Emir/Desktop/cvut intern/Original_Data/EasyB_Word_AOIs_Auto.xlsx")
+aois_sub <- aois %>% filter(Screen_name == "1")
+
+# Load Background Image
+img <- readPNG("C:/Users/Emir/Desktop/cvut intern/Original_Data/EasyB_1.png")
+img_w <- dim(img)[2]
+img_h <- dim(img)[1]
+bg_image <- rasterGrob(img, width = unit(1, "npc"), height = unit(1, "npc"))
+
+# Plot Word AOI Bounding Boxes over Stimulus Image
+ggplot(aois_sub) +
+  annotation_custom(bg_image, xmin = 0, xmax = img_w, ymin = 0, ymax = img_h) +
+  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+            fill = NA, color = "blue", size = 0.5) +
+  scale_x_continuous(limits = c(0, img_w), expand = c(0, 0)) +
+  scale_y_reverse(limits = c(img_h, 0), expand = c(0, 0)) + # Y reversed for image orientation
+  theme_minimal() +
+  labs(title = "OCR Word AOI Verification (EasyB_1)")
+
+
+
+
+
+
+
+
+
+#######################
+#######################
+#######################
+
+
 
 # 1. Filter for Screen 1
-fixations_sub <- fixations_HardB %>%
-  dplyr::filter(Screen_name == "2") %>%
+fixations_sub <- fixations_EasyB %>%
+  dplyr::filter(Screen_name == "1") %>%
   dplyr::mutate(Order = row_number()) # Adds fixation sequence (1, 2, 3...)
 
 # 2. Load Image
-img_path <- "C:/Users/Emir/Desktop/cvut intern/Original_Data/HardB_2.png"
+img_path <- "C:/Users/Emir/Desktop/cvut intern/Original_Data/EasyB_1.png"
 img <- readPNG(img_path)
 img_w <- dim(img)[2]
 img_h <- dim(img)[1]
