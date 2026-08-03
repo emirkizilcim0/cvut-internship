@@ -309,6 +309,7 @@ plot_pure_heatmap <- function(fix_df, target_screen, bg_image_path = NULL, bins 
     p <- p + annotation_custom(g_img, xmin = 0, xmax = 1920, ymin = 0, ymax = 1080)
   }
   
+  
   # 2. Pure Fixation Density Layer (Weighted by Fixation Duration)
   p <- p +
     stat_density_2d(
